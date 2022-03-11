@@ -3,10 +3,11 @@ using System.Collections;
 using UnityEngine;
 using Newtonsoft.Json;
 using UnityEngine.UI;
+using System.Threading.Tasks;
 
 public class ListChat : MonoBehaviour
 {
-    private string url = "http://localhost/ProjectTest/ListMessage.php";
+    private string url = "http://zakarea.mygamesonline.org/Unity_chat/ListMessage.php";
     [SerializeField] private List<string> ReseveData = new List<string>();
     [SerializeField] private List<string> oldListChat = new List<string>();
     [SerializeField] private List<string> saveListChat = new List<string>();
@@ -20,50 +21,55 @@ public class ListChat : MonoBehaviour
 
     private void Start()
     {
-        StartCoroutine(Getlistchat());
+        StartCoroutine(GetListcahtIE());
     }
 
-    private IEnumerator Getlistchat()
+    private IEnumerator GetListcahtIE()
     {
         while (true)
         {
-            string data = webApi.sendData(url, new Dictionary<string, string>
+            Task task = Getlistchat();
+            yield return new WaitForSeconds(1f);
+        }
+    }
+    private async Task Getlistchat()
+    {
+        string data = await webApi.sendData(url, new Dictionary<string, string>
         {
             {"user" , webApi.MyUsername}
         });
-            if (data != "[]")
-            {
-                ReseveData = JsonConvert.DeserializeObject<List<string>>(data);
-                saveListChat.Clear();
-                saveListChat.AddRange(ReseveData);
+        if (data != "[]")
+        {
+            ReseveData = JsonConvert.DeserializeObject<List<string>>(data);
+            saveListChat.Clear();
+            saveListChat.AddRange(ReseveData);
 
-                if (oldListChat.Count != 0 && oldListChat.Count != ReseveData.Count)
+            if (oldListChat.Count != 0 && oldListChat.Count != ReseveData.Count)
+            {
+                for (int i = 0; i < ReseveData.Count; i++)
                 {
-                    for (int i = 0; i < ReseveData.Count; i++)
+                    for (int j = 0; j < oldListChat.Count; j++)
                     {
-                        for (int j = 0; j < oldListChat.Count; j++)
+                        //----------------------------------
+                        if (ReseveData[i] == oldListChat[j])
                         {
-                            //----------------------------------
-                            if (ReseveData[i] == oldListChat[j])
-                            {
-                                DeletedItem.Add(ReseveData[i]);
-                                break;
-                            }
+                            DeletedItem.Add(ReseveData[i]);
+                            break;
                         }
                     }
-                    AddItemV(ReseveData);
                 }
-                if (FirstTime == false)
-                {
-                    AddItem(ReseveData);
-                    FirstTime = true;
-                }
-                oldListChat.Clear();
-                oldListChat.AddRange(saveListChat);
-                ReseveData.Clear();
+                AddItemV(ReseveData);
             }
-            yield return new WaitForSeconds(1f);
+            if (FirstTime == false)
+            {
+                AddItem(ReseveData);
+                FirstTime = true;
+            }
+            oldListChat.Clear();
+            oldListChat.AddRange(saveListChat);
+            ReseveData.Clear();
         }
+
     }
     private void AddItem(List<string> data)
     {

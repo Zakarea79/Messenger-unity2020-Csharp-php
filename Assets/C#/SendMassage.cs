@@ -6,18 +6,18 @@ using System.Threading.Tasks;
 
 public class SendMassage : MonoBehaviour
 {
-    private string Linkserver = "http://localhost/ProjectTest/sendmessage.php";
+    private string Linkserver = "http://zakarea.mygamesonline.org/Unity_chat/sendmessage.php";
 
     [SerializeField] private Button btnSend;
     [SerializeField] private InputField TextMessage;
 
     private void Start()
     {
-        btnSend.onClick.AddListener(delegate
+        btnSend.onClick.AddListener(async delegate
         {
             if (TextMessage.text != "")
             {
-                string result = webApi.sendData(Linkserver, new Dictionary<string, string>
+                string result = await webApi.sendData(Linkserver, new Dictionary<string, string>
                 {
                     {"e1" , webApi.MyUsername},
                     {"e2" , webApi.FrindUsername},

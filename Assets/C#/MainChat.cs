@@ -22,14 +22,14 @@ public class MainChat : MonoBehaviour
     private int lengthMessage = 0;
     private int positon = -50;
     private string ChatID = "";
-    private string urlMessage = "http://localhost/ProjectTest/";
-    private string urlServer = "http://localhost/ProjectTest/ListGetFileMessage.php";
+    private string urlMessage = "http://zakarea.mygamesonline.org/Unity_chat/";
+    private string urlServer = "http://zakarea.mygamesonline.org/Unity_chat/ListGetFileMessage.php";
     private bool ChatFiend = false;
-    private void LoadMessage()
+    private async void LoadMessage()
     {
         if (ChatFiend == false)
         {
-            string result = webApi.sendData(urlServer, new Dictionary<string, string>
+            string result = await webApi.sendData(urlServer, new Dictionary<string, string>
                 {
                     {"e1" , webApi.MyUsername},
                     {"e2" , webApi.FrindUsername}
