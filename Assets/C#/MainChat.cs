@@ -10,7 +10,7 @@ public class MainChat : MonoBehaviour
     {
         openGithubPage.onClick.AddListener(delegate
         {
-            Application.OpenURL("https://google.com");
+            Application.OpenURL("https://github.com/Zakarea79");
         });
         InvokeRepeating("LoadMessage", 1f, 1f);
     }
