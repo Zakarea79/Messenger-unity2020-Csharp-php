@@ -16,7 +16,7 @@ public class UI_Setting_ChatList : MonoBehaviour
         Username.text = webApi.MyUsername;
         openGithubPage.onClick.AddListener(delegate
         {
-            Application.OpenURL("https://google.com");
+            Application.OpenURL("https://github.com/Zakarea79");
         });
         btn_new_chat.onClick.AddListener(ActiveNewCahat);
         btn_Cansel.onClick.AddListener(ActiveNewCahat);
