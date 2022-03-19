@@ -1865,7 +1865,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 907145423}
   m_HandleRect: {fileID: 907145422}
   m_Direction: 2
-  m_Value: 1
+  m_Value: 0
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -2677,7 +2677,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Zakgram
+  m_Text: Messenger
 --- !u!222 &2037464865
 CanvasRenderer:
   m_ObjectHideFlags: 0

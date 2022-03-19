@@ -10,11 +10,11 @@ public class MainChat : MonoBehaviour
     {
         openGithubPage.onClick.AddListener(delegate
         {
-            Application.OpenURL("https://github.com/Zakarea79");
+            //Application.OpenURL("https://github.com/Zakarea79");
         });
         InvokeRepeating("LoadMessage", 1f, 1f);
     }
-    
+
     [SerializeField] private RectTransform Plane;
     [SerializeField] private GameObject MessageItem;
     [SerializeField] private Scrollbar scrollbar;
@@ -42,32 +42,39 @@ public class MainChat : MonoBehaviour
         }
         if (ChatID != "")
         {
-            using (WebClient client = new WebClient())
+            try
             {
-                string messags = client.DownloadString(urlMessage + ChatID);
-
-                for (int i = lengthMessage; i < messags.Split('\n').Length - 1; i++)
+                using (WebClient client = new WebClient())
                 {
-                    Plane.sizeDelta = new Vector2(Plane.sizeDelta.x, Plane.sizeDelta.y + 105);
-                    //-------------------------
-                    GameObject v = Instantiate(MessageItem, new Vector2(0, 0), Plane.rotation, Plane.transform);
-                    scrollbar.value = 0;
-                    v.GetComponent<RectTransform>().anchoredPosition = (new Vector2(0, positon));
-                    string finduser = messags.Split('\n')[i].Split(':')[0];
-                    if(finduser == webApi.FrindUsername)
+                    string messags = client.DownloadString(urlMessage + ChatID);
+
+                    for (int i = lengthMessage; i < messags.Split('\n').Length - 1; i++)
                     {
-                        v.GetComponent<Image>().color = Color.white;
+                        Plane.sizeDelta = new Vector2(Plane.sizeDelta.x, Plane.sizeDelta.y + 105);
+                        //-------------------------
+                        GameObject v = Instantiate(MessageItem, new Vector2(0, 0), Plane.rotation, Plane.transform);
+                        scrollbar.value = 0;
+                        v.GetComponent<RectTransform>().anchoredPosition = (new Vector2(0, positon));
+                        string finduser = messags.Split('\n')[i].Split(':')[0];
+                        if (finduser == webApi.FrindUsername)
+                        {
+                            v.GetComponent<Image>().color = Color.white;
+                        }
+                        else
+                        {
+                            v.GetComponent<Image>().color = Color.green;
+                        }
+                        v.transform.Find("Text").GetComponent<UnityEngine.UI.Text>().text = messags.Split('\n')[i].Split(':')[1];
+                        positon -= 105;
+
                     }
-                    else
-                    {
-                        v.GetComponent<Image>().color = Color.green;
-                    }
-                    v.transform.Find("Text").GetComponent<UnityEngine.UI.Text>().text = messags.Split('\n')[i].Split(':')[1];
-                    positon -= 105;
-                    
+                    lengthMessage = messags.Split('\n').Length - 1;
                 }
-                lengthMessage = messags.Split('\n').Length - 1;
             }
-        };
+            catch (System.Exception)
+            {
+                ;
+            }
+        }
     }
 }

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Threading.Tasks;
-
 public class SendMassage : MonoBehaviour
 {
     private string Linkserver = "http://zakarea.mygamesonline.org/Unity_chat/sendmessage.php";
